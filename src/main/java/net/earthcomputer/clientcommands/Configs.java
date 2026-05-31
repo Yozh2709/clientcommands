@@ -75,6 +75,9 @@ public class Configs {
     @Config
     public static boolean toolBreakWarning = false;
 
+    @Config
+    public static boolean paper = false;
+
     @Config(setter = @Config.Setter("setMaxEnchantItemThrows"))
     private static int maxEnchantItemThrows = 64 * 256;
     public static int getMaxEnchantItemThrows() {

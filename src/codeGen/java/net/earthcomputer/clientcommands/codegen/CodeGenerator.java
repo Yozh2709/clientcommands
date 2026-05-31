@@ -23,15 +23,23 @@ public class CodeGenerator {
     }
 
     private static void genLattiCG(Path destDir) throws IOException {
-        ProgramBuilder program = Program.builder(LCG.JAVA);
-        program.skip(-CCrackRng.NUM_THROWS * 4);
+        ProgramBuilder programVanilla = Program.builder(LCG.JAVA);
+        programVanilla.skip(-CCrackRng.NUM_THROWS * 4);
         for (int i = 0; i < CCrackRng.NUM_THROWS; i++) {
-            program.skip(1);
-            program.add(JavaCalls.nextFloat().ranged(CCrackRng.MAX_ERROR * 2));
-            program.skip(2);
+            programVanilla.skip(1);
+            programVanilla.add(JavaCalls.nextFloat().ranged(CCrackRng.MAX_ERROR * 2));
+            programVanilla.skip(2);
         }
+        writeLattiCGClass(programVanilla.build(), "net.earthcomputer.clientcommands.features.CCrackRngGenVanilla", destDir);
 
-        writeLattiCGClass(program.build(), "net.earthcomputer.clientcommands.features.CCrackRngGen", destDir);
+        ProgramBuilder programPaper = Program.builder(LCG.JAVA);
+        programPaper.skip(-CCrackRng.NUM_THROWS * 14);
+        for (int i = 0; i < CCrackRng.NUM_THROWS; i++) {
+            programPaper.skip(1);
+            programPaper.add(JavaCalls.nextFloat().ranged(CCrackRng.MAX_ERROR * 2));
+            programPaper.skip(12);
+        }
+        writeLattiCGClass(programPaper.build(), "net.earthcomputer.clientcommands.features.CCrackRngGenPaper", destDir);
     }
 
     private static void writeLattiCGClass(Program program, String fqName, Path destDir) throws IOException {

@@ -139,7 +139,8 @@ public class PlayerRandCracker {
 
     public static void onDropItem() {
         if (canMaintainPlayerRNG(RNGCallType.DROP_ITEM)) {
-            for (int i = 0; i < 4; i++) {
+            int steps = Configs.paper ? 14 : 4;
+            for (int i = 0; i < steps; i++) {
                 nextInt();
             }
         } else {
@@ -368,8 +369,9 @@ public class PlayerRandCracker {
         Random rand = new Random(seed ^ MULTIPLIER);
 
         int itemsNeeded = 0;
+        int steps = Configs.paper ? 14 : 4;
         for (; itemsNeeded <= max && !condition.test(rand); itemsNeeded++) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < steps; i++) {
                 seed = (seed * MULTIPLIER + ADDEND) & MASK;
             }
             rand.setSeed(seed ^ MULTIPLIER);
@@ -424,7 +426,11 @@ public class PlayerRandCracker {
     }
 
     public static void unthrowItem() {
-        seed = (seed * 0xdba6ed0471f1L + 0x25493d2c3b3cL) & MASK;
+        if (Configs.paper) {
+            seed = (seed * 0x436788642e29L + 0xb35569c89aaaL) & MASK;
+        } else {
+            seed = (seed * 0xdba6ed0471f1L + 0x25493d2c3b3cL) & MASK;
+        }
     }
 
     @Nullable

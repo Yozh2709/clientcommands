@@ -413,7 +413,8 @@ public class EnchantmentCracker {
             futures.add(CompletableFuture.supplyAsync(() -> {
                 try {
                     Rand playerRand = new Rand(LCG.JAVA, playerSeed);
-                    playerRand.advance(Math.max(times, 0) * 4L);
+                    long steps = Configs.paper ? 14L : 4L;
+                    playerRand.advance(Math.max(times, 0) * steps);
                     int xpSeed = times == ManipulateResult.NO_DUMMY ?
                         noDummyXpSeed
                         : (int) playerRand.nextBits(32);
